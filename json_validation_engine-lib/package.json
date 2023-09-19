@@ -1,0 +1,17 @@
+{
+  "name": "json_validation_engine-lib",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "author": {
+    "name": "Naman Khater",
+    "email": "naman22khater@gmail.com"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.4"
+  }
+}
