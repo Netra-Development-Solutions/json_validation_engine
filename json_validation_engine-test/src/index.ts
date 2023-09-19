@@ -10,5 +10,5 @@ const validateSchema = new JsonValidationEngine.ValidateSchema(data, schema, tru
 const endTime = Date.now();
 
 console.log(validateSchema.validateData());
-console.log(validateSchema.errors);
+console.log(JSON.stringify(validateSchema.errors));
 console.log(`Time to validate: ${endTime - startTime}ms`);

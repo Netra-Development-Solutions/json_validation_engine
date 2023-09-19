@@ -6,5 +6,21 @@
         "street": "123 Main St",
         "state": "NY",
         "zip": 10001
-    }
+    },
+    "subjects": [
+        {
+            "name": "Maths",
+            "marks": 90
+        },
+        {
+            "name": "Science",
+            "marks": 80
+        }
+    ],
+    "nestedArray": [
+        [
+            "Hello",
+            "123"
+        ]
+    ]
 }

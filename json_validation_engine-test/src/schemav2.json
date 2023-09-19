@@ -28,6 +28,33 @@
                     "type": "number"
                 }
             }
+        },
+        "subjects": {
+            "type": "object",
+            "subType": "array",
+            "childProps": {
+                "type": "object",
+                "childProps": {
+                    "name": {
+                        "type": "string",
+                        "required": true
+                    },
+                    "marks": {
+                        "type": "number"
+                    }
+                }
+            }
+        },
+        "nestedArray": {
+            "type": "object",
+            "subType": "array",
+            "childProps": {
+                "type": "object",
+                "subType": "array",
+                "childProps": {
+                    "type": "string"
+                }
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ class ValidateSchema {
 
     private validate_childProps (data: any, schema: any): boolean {
 
-        if (schema.type === 'object') {
+        if (schema.type === 'object' && schema.subType !== 'array') {
             for (const property in Object.keys(schema.childProps)) {
                 const key = Object.keys(schema.childProps)[property];
                 const newSchema = schema.childProps[key];
@@ -48,6 +48,20 @@ class ValidateSchema {
                     this.errors[key] = validationSchema.errors;
                 }
             }
+
+            if (Object.keys(this.errors).length > 0) {
+                return false;
+            }
+        }
+
+        if (schema.type === 'object' && schema.subType === 'array') {
+            data.forEach((item: any, index: number) => {
+                const validationSchema = new ValidateSchema(item, schema.childProps, false, this._transactionId);
+
+                if (!validationSchema.validateData()) {
+                    this.errors[index] = validationSchema.errors;
+                }
+            });
 
             if (Object.keys(this.errors).length > 0) {
                 return false;
