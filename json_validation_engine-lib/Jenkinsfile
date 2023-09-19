@@ -28,7 +28,7 @@ pipeline {
                     echo "Publishing package to NPM"
                     withCredentials([string(credentialsId: 'nodejs_authentication_token', variable: 'NPM_TOKEN')]) {
                         bat "npm config set //registry.npmjs.org/:_authToken=%NPM_TOKEN%"
-                        bat "npm publish"
+                        bat "npm publish --access=public"
                     }
                 }
             }
