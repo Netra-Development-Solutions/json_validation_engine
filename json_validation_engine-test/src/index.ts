@@ -6,7 +6,7 @@ import {default as schema} from './schema.json';
 
 // time to test the lib
 const startTime = Date.now();
-const validateSchema = new JsonValidationEngine.ValidateSchema(data, schema);
+const validateSchema = new JsonValidationEngine.ValidateSchema(data, schema, true);
 const endTime = Date.now();
 
 console.log(validateSchema.validateData());

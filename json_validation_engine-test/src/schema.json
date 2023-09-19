@@ -1,1 +1,36 @@
-{}
+{
+    "name": {
+        "type": "string"
+    },
+    "url": {
+        "type": "string"
+    },
+    "description": {
+        "type": "string"
+    },
+    "dependencies": {
+        "jquery": {
+            "type": "string"
+        }
+    },
+    "devDependencies": {
+        "jquery": {
+            "type": "string",
+            "required": true
+        }
+    },
+    "keywords": [
+        {
+            "type": "string"
+        }
+    ],
+    "typescriptEnabled": {
+        "type": "boolean"
+    },
+    "nullValueHandling": {
+        "type": "string"
+    },
+    "numberValueHandling": {
+        "type": "string"
+    }
+}
