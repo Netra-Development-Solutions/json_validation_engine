@@ -1,6 +1,6 @@
 {
-  "name": "json_validation_engine-lib",
-  "version": "0.0.1",
+  "name": "@netra-development-solutions/json_validation_engine-lib",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
