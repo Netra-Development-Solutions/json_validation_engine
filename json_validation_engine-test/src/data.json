@@ -1,0 +1,27 @@
+{
+    "name": "Naman",
+    "age": 21,
+    "isMale": true,
+    "email": "naman22khatergmail.com",
+    "address": {
+        "street": "123 Main St",
+        "state": "NY",
+        "zip": 10001
+    },
+    "subjects": [
+        {
+            "name": "Maths",
+            "marks": 90
+        },
+        {
+            "name": "Science",
+            "marks": 80
+        }
+    ],
+    "nestedArray": [
+        [
+            "Hello",
+            "123"
+        ]
+    ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "json_validation_engine-test",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.4",
+    "json_validation_engine-lib": "^0.0.1"
+  }
+}

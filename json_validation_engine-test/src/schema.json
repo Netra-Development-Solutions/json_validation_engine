@@ -1,0 +1,39 @@
+[
+    {
+        "type": "object",
+        "childProps": [
+            {
+                "name": {
+                    "type": "string",
+                    "required": true
+                }
+            },
+            {
+                "age": {
+                    "type": "number",
+                    "required": true
+                }
+            },
+            {
+                "isMale": {
+                    "type": "boolean",
+                    "required": true
+                }
+            },
+            {
+                "subjects": {
+                    "type": "array",
+                    "childProps": {
+                        "name": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "marks": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        ]
+    }
+]

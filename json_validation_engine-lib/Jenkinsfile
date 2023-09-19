@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage("Code") {
+            steps {
+                echo "Cloning the code from GitHub"
+                git branch: 'DEVELOPMENT', url: 'https://github.com/Netra-Development-Solutions/json_validation_engine'
+            }
+        }
+        stage("Install Dependencies") {
+            steps {
+                dir("json_validation_engine-lib") {
+                    echo "Installing npm dependencies"
+                    bat "npm install"
+                }
+            }
+        }
+        stage("Run Tests") {
+            steps {
+                echo "Running tests"
+                // bat "npm test"
+            }
+        }
+        stage("Publishing package to NPM") {
+            steps {
+                dir("json_validation_engine-lib") {
+                    echo "Publishing package to NPM"
+                    withCredentials([string(credentialsId: 'nodejs_authentication_token', variable: 'NPM_TOKEN')]) {
+                        bat "npm config set //registry.npmjs.org/:_authToken=%NPM_TOKEN%"
+                        bat "npm publish"
+                    }
+                }
+            }
+        }
+    }
+}
