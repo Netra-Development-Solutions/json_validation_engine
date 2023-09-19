@@ -1,12 +1,10 @@
 {
-    "name": "jquery.iframe-transport.js",
-    "url": "naman34/jquery.iframe-transport.js.git",
-    "dependencies": {
-        "jquery": ">=1.6"
-    },
-    "description": "jQuery Ajax transport plugin that supports file uploads through a hidden iframe",
-    "keywords": [12,23],
-    "typescriptEnabled": false,
-    "nullValueHandling": null,
-    "numberValueHandling": 23
+    "name": "Naman",
+    "age": 21,
+    "isMale": true,
+    "address": {
+        "street": "123 Main St",
+        "state": "NY",
+        "zip": 10001
+    }
 }

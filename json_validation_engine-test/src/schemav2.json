@@ -1,0 +1,33 @@
+{
+    "type": "object",
+    "childProps": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "age": {
+            "type": "number"
+        },
+        "isMale": {
+            "type": "boolean"
+        },
+        "address": {
+            "type": "object",
+            "childProps": {
+                "street": {
+                    "type": "string",
+                    "required": true
+                },
+                "city": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "number"
+                }
+            }
+        }
+    }
+}

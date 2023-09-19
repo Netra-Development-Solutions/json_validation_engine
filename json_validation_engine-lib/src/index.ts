@@ -13,161 +13,88 @@ class ValidateSchema {
         this._transactionId = transactionId || this.generateGUID();
     }
 
-    generateGUID (): string {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c: any) => {
-            const r = Math.random() * 16 | 0;
-            const v = c === 'x' ? r : (r & 0x3 | 0x8);
-
-            return v.toString(16);
-        });
-    }
-
     public validateData (): boolean {
-        if (this._data === undefined || this._schema === undefined) {
-            this.errors = 'Data or Schema is invalid';
-            return false;
+        for (const property in Object.keys(this._schema)) {
+            const key = Object.keys(this._schema)[property];
+            const value = this._schema[key];
+            const functionName = `validate_${key}`;
+
+            if (typeof (this as any)[functionName] === 'function') {
+                try {
+                    (this as any)[functionName](this._data, this._schema);
+                } catch (e: any) {
+                    this.errors[key] = e.message;
+                }
+            }
         }
 
-        if (typeof this._data === 'object' && typeof this._schema === 'object') {
-            if (this.isArray(this._data)) {
-                return this.validateArray();
-            }
-
-            if (this.isNull(this._data)) {
-                return this.validateNull();
-            }
-
-            if (this.isString(this._data)) {
-                return this.validateString();
-            }
-
-            if (this.isNumber(this._data)) {
-                return this.validateNumber();
-            }
-
-            Object.keys(this._schema).forEach((key: any, index: number) => {
-                if (this._data[key] === undefined) {
-                    this.errors[key] = 'Key not found';
-                }
-
-                let validateSchema = new ValidateSchema(this._data[key], this._schema[key], false, this._transactionId);
-                if (!validateSchema.validateData()) {
-                    this.errors[key] = validateSchema.errors;
-                }
-            });
-        }
-
-        if (this.errors.length > 0) {
+        if (Object.keys(this.errors).length > 0) {
             return false;
         }
 
         return true;
     }
 
-    validateNumber (): boolean {
-        return true;
-    }
+    private validate_childProps (data: any, schema: any): boolean {
 
-    validateString(): boolean {
-        if (this.isObject(this._schema)) {
-            Object.keys(this._schema).forEach((key: string) => {
-                const validationFunctionName = `validate${key}`;
-                const validationFunction = (this as any)[validationFunctionName]; // Get the validation function dynamically
+        if (schema.type === 'object') {
+            for (const property in Object.keys(schema.childProps)) {
+                const key = Object.keys(schema.childProps)[property];
+                const newSchema = schema.childProps[key];
+                
+                const validationSchema = new ValidateSchema(data[key], newSchema, false, this._transactionId);
 
-                if (typeof validationFunction === 'function') {
-                    const isValid = validationFunction.call(this, this._schema[key]);
-                    if (!isValid) {
-                        // Handle validation error, e.g., set an error message
-                        this.errors = `Validation failed for key: ${key}`;
-                        return false;
-                    }
-                } else {
-                    // Handle missing validation function
-                    this.errors = `Validation function for key: ${key} is missing`;
-                    return false;
+                if (!validationSchema.validateData()) {
+                    this.errors[key] = validationSchema.errors;
                 }
-            });
-            // All validations passed
-            return true;
-        } else {
-            this.errors = 'Schema is not an object';
-            return false;
-        }
-    }
+            }
 
-    validateType (): boolean {
-        let expectedDataType = typeof this._schema?.Type;
-
-        if (expectedDataType !== typeof this._data) {
-            this.errors = `Expected data type is ${expectedDataType}. Received ${typeof this._data}`;
-            return false;
-        }
-
-        return true;
-    }
-
-    validateMaxLength (): boolean {
-        if (this._schema?.MaxLength) {
-            if (this._data.length > this._schema.MaxLength) {
-                this.errors = `${this._schema.Type} is too long`;
+            if (Object.keys(this.errors).length > 0) {
                 return false;
             }
         }
 
+        if (schema.type === 'array') {}
+
         return true;
     }
 
-    validateMinLength (): boolean {
-        if (this._schema?.MinLength) {
-            if (this._data.length < this._schema.MinLength) {
-                this.errors = `${this._schema.Type} is too short`;
-                return false;
+    private validate_required (data: any, schema: any): boolean {
+        const required = schema.required;
+
+        if (required) {
+            const data_type = typeof data;
+            const schema_type = schema.type;
+
+            if (data_type !== schema_type) {
+                throw new Error(`Data type is not valid. Expected ${schema_type} but got ${data_type}`);
+            }
+
+            if (this.isString(data)) {
+                if (data.length === 0) {
+                    throw new Error(`String is empty.`);
+                }
+            }
+
+            if (this.isArray(data)) {
+                if (data.length === 0) {
+                    throw new Error(`Array is empty.`);
+                }
             }
         }
 
         return true;
     }
 
-    validateNull (): boolean {
-        if (this._schema?.Required === true) {
-            this.errors = 'Required field is null';
-            return false;
+    private validate_type (data: any, schema: any): boolean {
+        const data_type = typeof data;
+        const schema_type = schema.type;
+
+        if (data_type !== 'undefined' && data_type !== schema_type) {
+            throw new Error(`Data type is not valid. Expected ${schema_type} but got ${data_type}`);
         }
 
         return true;
-    }
-
-    // Call this function if the data is an array
-    validateArray (): boolean {
-        if (!this.isArray(this._schema)) {
-            this.errors = 'Schema is not an array';
-            return false;
-        }
-        if (this._schema.length === 0) {
-            this.errors = 'Schema is empty';
-            return false;
-        }
-
-        this._data.forEach((element: any, index: number) => {
-            let validateSchema = new ValidateSchema(element, this._schema[0], false, this._transactionId);
-            if (!validateSchema.validateData()) {
-                this.errors[index] = validateSchema.errors;
-            }
-        });
-
-        if (this._loggerEnabled) {
-            console.log(this._transactionId)
-            // TODO: Log the errors
-        }
-        return Object.keys(this.errors).length === 0 ? true : false;
-    }
-
-    public updateSchema (schema: object): void {
-        this._schema = schema;
-    }
-
-    public updateData (data: object): void {
-        this._data = data;
     }
 
     private isArray (data: object): boolean {
@@ -188,6 +115,15 @@ class ValidateSchema {
 
     private isNumber (data: object): boolean {
         return typeof data === 'number';
+    }
+    
+    generateGUID (): string {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c: any) => {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+
+            return v.toString(16);
+        });
     }
 }
 
