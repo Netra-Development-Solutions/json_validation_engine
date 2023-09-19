@@ -112,7 +112,6 @@ class ValidateSchema {
     }
 
     private validate_email(data: any, schema: any): boolean {
-        console.log('validate_email', data, schema);
         if (schema.email === true) {
             if (this.isString(data)) {
                 const emailRegex = /^("(?:[!#-\[\]-\u{10FFFF}]|\\[\t -\u{10FFFF}])*"|[!#-'*+\-/-9=?A-Z\^-\u{10FFFF}](?:\.?[!#-'*+\-/-9=?A-Z\^-\u{10FFFF}])*)@([!#-'*+\-/-9=?A-Z\^-\u{10FFFF}](?:\.?[!#-'*+\-/-9=?A-Z\^-\u{10FFFF}])*|\[[!-Z\^-\u{10FFFF}]*\])$/u;
