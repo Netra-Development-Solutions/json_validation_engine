@@ -2,6 +2,7 @@
     "name": "Naman",
     "age": 21,
     "isMale": true,
+    "email": "naman22khatergmail.com",
     "address": {
         "street": "123 Main St",
         "state": "NY",

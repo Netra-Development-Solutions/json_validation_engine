@@ -6,14 +6,14 @@ class ValidateSchema {
     private _loggerEnabled: boolean;
     public errors: any = {};
 
-    constructor (data: object, schema: object, loggerEnabled: boolean = false, transactionId?: string) {
+    constructor(data: object, schema: object, loggerEnabled: boolean = false, transactionId?: string) {
         this._data = data;
         this._schema = schema;
         this._loggerEnabled = loggerEnabled;
         this._transactionId = transactionId || this.generateGUID();
     }
 
-    public validateData (): boolean {
+    public validateData(): boolean {
         for (const property in Object.keys(this._schema)) {
             const key = Object.keys(this._schema)[property];
             const value = this._schema[key];
@@ -35,13 +35,13 @@ class ValidateSchema {
         return true;
     }
 
-    private validate_childProps (data: any, schema: any): boolean {
+    private validate_childProps(data: any, schema: any): boolean {
 
         if (schema.type === 'object' && schema.subType !== 'array') {
             for (const property in Object.keys(schema.childProps)) {
                 const key = Object.keys(schema.childProps)[property];
                 const newSchema = schema.childProps[key];
-                
+
                 const validationSchema = new ValidateSchema(data[key], newSchema, false, this._transactionId);
 
                 if (!validationSchema.validateData()) {
@@ -68,12 +68,12 @@ class ValidateSchema {
             }
         }
 
-        if (schema.type === 'array') {}
+        if (schema.type === 'array') { }
 
         return true;
     }
 
-    private validate_required (data: any, schema: any): boolean {
+    private validate_required(data: any, schema: any): boolean {
         const required = schema.required;
 
         if (required) {
@@ -100,7 +100,7 @@ class ValidateSchema {
         return true;
     }
 
-    private validate_type (data: any, schema: any): boolean {
+    private validate_type(data: any, schema: any): boolean {
         const data_type = typeof data;
         const schema_type = schema.type;
 
@@ -111,27 +111,44 @@ class ValidateSchema {
         return true;
     }
 
-    private isArray (data: object): boolean {
+    private validate_email(data: any, schema: any): boolean {
+        console.log('validate_email', data, schema);
+        if (schema.email === true) {
+            if (this.isString(data)) {
+                const emailRegex = /^("(?:[!#-\[\]-\u{10FFFF}]|\\[\t -\u{10FFFF}])*"|[!#-'*+\-/-9=?A-Z\^-\u{10FFFF}](?:\.?[!#-'*+\-/-9=?A-Z\^-\u{10FFFF}])*)@([!#-'*+\-/-9=?A-Z\^-\u{10FFFF}](?:\.?[!#-'*+\-/-9=?A-Z\^-\u{10FFFF}])*|\[[!-Z\^-\u{10FFFF}]*\])$/u;
+
+                if (!emailRegex.test(data)) {
+                    throw new Error(`Email is not valid.`);
+                }
+            } else {
+                throw new Error(`Cannot validate email. Data is not a string.`);
+            }
+        }
+
+        return true;
+    }
+
+    private isArray(data: object): boolean {
         return Array.isArray(data);
     }
 
-    private isNull (data: object): boolean {
+    private isNull(data: object): boolean {
         return data === null;
     }
 
-    private isObject (data: object): boolean {
+    private isObject(data: object): boolean {
         return typeof data === 'object';
     }
 
-    private isString (data: object): boolean {
+    private isString(data: object): boolean {
         return typeof data === 'string';
     }
 
-    private isNumber (data: object): boolean {
+    private isNumber(data: object): boolean {
         return typeof data === 'number';
     }
-    
-    generateGUID (): string {
+
+    generateGUID(): string {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c: any) => {
             const r = Math.random() * 16 | 0;
             const v = c === 'x' ? r : (r & 0x3 | 0x8);

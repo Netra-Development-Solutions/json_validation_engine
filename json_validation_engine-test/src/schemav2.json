@@ -5,6 +5,11 @@
             "type": "string",
             "required": true
         },
+        "email": {
+            "type": "string",
+            "required": true,
+            "email": true
+        },
         "age": {
             "type": "number"
         },
