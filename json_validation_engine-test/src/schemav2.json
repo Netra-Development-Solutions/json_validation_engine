@@ -1,0 +1,60 @@
+{
+    "type": "object",
+    "childProps": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "age": {
+            "type": "number"
+        },
+        "isMale": {
+            "type": "boolean"
+        },
+        "address": {
+            "type": "object",
+            "childProps": {
+                "street": {
+                    "type": "string",
+                    "required": true
+                },
+                "city": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "number"
+                }
+            }
+        },
+        "subjects": {
+            "type": "object",
+            "subType": "array",
+            "childProps": {
+                "type": "object",
+                "childProps": {
+                    "name": {
+                        "type": "string",
+                        "required": true
+                    },
+                    "marks": {
+                        "type": "number"
+                    }
+                }
+            }
+        },
+        "nestedArray": {
+            "type": "object",
+            "subType": "array",
+            "childProps": {
+                "type": "object",
+                "subType": "array",
+                "childProps": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
