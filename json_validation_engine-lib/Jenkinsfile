@@ -16,6 +16,14 @@ pipeline {
                 }
             }
         }
+        stage("Build module") {
+            steps {
+                dir("json_validation_engine-lib") {
+                    echo "Building library"
+                    bat "npm run build"
+                }
+            }
+        }
         stage("Run Tests") {
             steps {
                 echo "Running tests"
