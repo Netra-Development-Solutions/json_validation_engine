@@ -1,3 +1,5 @@
+import SchmemaCompiler from "./schemaCompiler";
+
 // JSON Validation Engine is a library for validating JSON objects against a JSON schema.
 class ValidateSchema {
     private _data: any;
@@ -8,7 +10,7 @@ class ValidateSchema {
 
     constructor(data: object, schema: object, loggerEnabled: boolean = false, transactionId?: string) {
         this._data = data;
-        this._schema = schema;
+        this._schema = (new SchmemaCompiler(schema)).compile();
         this._loggerEnabled = loggerEnabled;
         this._transactionId = transactionId || this.generateGUID();
     }

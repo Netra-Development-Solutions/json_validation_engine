@@ -10,9 +10,7 @@
             "required": true,
             "email": true
         },
-        "age": {
-            "type": "number"
-        },
+        "age": "number",
         "isMale": {
             "type": "boolean"
         },
