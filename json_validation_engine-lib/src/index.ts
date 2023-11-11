@@ -10,9 +10,18 @@ class ValidateSchema {
 
     constructor(data: object, schema: object, loggerEnabled: boolean = false, transactionId?: string) {
         this._data = data;
-        this._schema = (new SchmemaCompiler(schema)).compile();
+        this._schema = schema;
         this._loggerEnabled = loggerEnabled;
         this._transactionId = transactionId || this.generateGUID();
+    }
+
+    public fetchDependencies(): Array<String> {
+        return (new SchmemaCompiler(this._schema)).fetchAllDependencies(this._schema);
+    }
+
+    public compileSchema(dependency: Object): any {
+        this._schema = (new SchmemaCompiler(this._schema)).compile(dependency);
+        return this._schema;
     }
 
     public validateData(): boolean {
