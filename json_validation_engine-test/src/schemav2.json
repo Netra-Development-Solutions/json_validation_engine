@@ -15,22 +15,7 @@
             "type": "boolean"
         },
         "address": {
-            "type": "object",
-            "childProps": {
-                "street": {
-                    "type": "string",
-                    "required": true
-                },
-                "city": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "zip": {
-                    "type": "number"
-                }
-            }
+            "jsonSchema": "addressSchema"
         },
         "subjects": {
             "type": "object",
@@ -52,11 +37,7 @@
             "type": "object",
             "subType": "array",
             "childProps": {
-                "type": "object",
-                "subType": "array",
-                "childProps": {
-                    "type": "string"
-                }
+                "jsonSchema": "nestedArraySchema"
             }
         }
     }
